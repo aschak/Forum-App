@@ -22,10 +22,11 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
 
-  def require_moderator!(sub)
+  def require_moderator!
+    sub = Sub.find(params[:id])
     redirect_to subs_url unless current_user.id == sub.user_id
   end
-  
+
   # def require_user!
   #   redirect_to new_session_url if current_user.nil?
   # end

@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   attr_reader :password
 
   after_initialize :ensure_session_token
+
   validates :username, :session_token, uniqueness: true
   validates :username, :password_digest, :session_token, presence: true
   validates :password, length: { minimum: 6, allow_nil: true }
@@ -9,17 +10,14 @@ class User < ActiveRecord::Base
   has_many :subs,
     foreign_key: :user_id,
     primary_key: :id,
-    class_name: "Sub"
+    class_name: "Sub",
+    dependent: :destroy
 
   has_many :posts,
     foreign_key: :author_id,
     primary_key: :id,
     class_name: "Post",
     dependent: :destroy
-
-  def self.generate_session_token
-    SecureRandom.urlsafe_base64(16)
-  end
 
   def self.find_by_credentials(username, password)
     user = User.find_by(username: username)
@@ -43,6 +41,12 @@ class User < ActiveRecord::Base
 
   def ensure_session_token
     self.session_token ||= self.class.generate_session_token
+  end
+
+  private
+  # TODO
+  def self.generate_session_token
+    SecureRandom.urlsafe_base64(16)
   end
 
 end

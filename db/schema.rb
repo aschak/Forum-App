@@ -11,19 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120233549) do
+ActiveRecord::Schema.define(version: 20151121002024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "sessions", force: :cascade do |t|
-    t.integer  "user_id",       null: false
-    t.string   "session_token", null: false
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+  create_table "posts", force: :cascade do |t|
+    t.string   "title",      null: false
+    t.string   "url"
+    t.string   "content"
+    t.integer  "sub_id",     null: false
+    t.integer  "author_id",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", unique: true, using: :btree
+  add_index "posts", ["author_id"], name: "index_posts_on_author_id", using: :btree
+  add_index "posts", ["sub_id"], name: "index_posts_on_sub_id", using: :btree
 
   create_table "subs", force: :cascade do |t|
     t.string   "title",       null: false
@@ -44,6 +48,7 @@ ActiveRecord::Schema.define(version: 20151120233549) do
     t.datetime "updated_at",      null: false
   end
 
+  add_index "users", ["session_token"], name: "index_users_on_session_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
 end

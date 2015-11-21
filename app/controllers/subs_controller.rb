@@ -1,6 +1,6 @@
 class SubsController < ApplicationController
   # TODO
-  # before_action :require_moderator!(Sub.find(params[:id]), only: [:edit, :update, :destroy]
+  before_action :require_moderator!, only: [:edit, :update, :destroy]
 
   def index
     @subs = Sub.all
