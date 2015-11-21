@@ -18,8 +18,8 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find_by(session_token: session[:session_token])
   end
 
-  def logged_in?
-    !!current_user
+  def already_logged_in!
+    redirect_to user_url(current_user) if current_user
   end
 
   def require_moderator!
@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
     redirect_to subs_url unless current_user.id == sub.user_id
   end
 
-  # def require_user!
-  #   redirect_to new_session_url if current_user.nil?
-  # end
+  def require_user!
+    redirect_to new_session_url if current_user.nil?
+  end
 end
