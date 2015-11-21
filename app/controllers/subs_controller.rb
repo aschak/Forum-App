@@ -1,5 +1,6 @@
 class SubsController < ApplicationController
   # TODO
+  before_action :require_user!, only: [:edit]
   before_action :require_moderator!, only: [:edit, :update, :destroy]
 
   def index

@@ -1,0 +1,7 @@
+<ul>
+  <% objs.each do |obj| %>
+    <li>
+      <%= link_to obj.title, sub_url(obj) %>
+    </li>
+  <% end %>
+</ul>
